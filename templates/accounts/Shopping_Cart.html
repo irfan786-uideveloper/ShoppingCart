@@ -1,0 +1,91 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+{% load static %}
+<style>
+    body{
+    margin-top:20px;
+    background:#eee;
+}
+.ui-w-40 {
+    width: 60px !important;
+    height: auto;
+}
+.icon{
+  padding-left: 40px;
+}
+.card{
+    box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+}
+
+.ui-product-color {
+    display: inline-block;
+    overflow: hidden;
+    margin: .144em;
+    width: .875rem;
+    height: .875rem;
+    border-radius: 10rem;
+    -webkit-box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.15) inset;
+    vertical-align: middle;
+}
+</style>
+<div class="container px-3 my-5 clearfix">
+    <!-- Shopping cart table -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Shopping Cart</h2>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+              <tab                                                                                                le class="table table-bordered m-0">
+                <thead>
+                  <tr>
+                    <!-- Set columns width -->
+                    <th class="text-center py-3 px-4" style="min-width: 100px;">Product Name &amp; Details</th>
+                    <th class="text-right py-3 px-4" style="width: 200px;">Price</th>
+                    <th class="text-center py-3 px-4" style="width: 150px;">Quantity</th>
+                    <th class="text-right py-3 px-4" style="width: 200px;">Total</th>
+                    <th class="text-right py-3 px-4" style="width: 200px;">Remove</th>
+                    <!-- <th class="text-center align-middle py-3 px-0" style="width: 200px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart">Remove Item</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                  <tr>
+                    <td class="p-2">
+                      <div class="media align-items-center">
+                        <img src="/media/{{item.product.image}}" class="d-block ui-w-40 ui-bordered mr-2" alt="">
+                        <div class="media-body">
+                          <a href="#" class="d-block text-dark">{{item.product.name}}</a>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="text-right font-weight-semibold align-middle p-4">${{item.product.price}}</td>
+                    <td><a href="{% url 'increase_cart_item' item.id %}" class="btn btn-success btn-sm">Increment</a></td>
+                    <td><a href="{% url 'decrement_cart_item' item.id %}" class="btn btn-danger btn-sm">Decrement</a></td>
+                    <td class="align-middle p-4"><input type="number" class="form-control text-center" value="{{item.quantity}}"></td>
+                 <div class="cart-item-quantity">
+                    <td class="text-right font-weight-semibold align-middle p-4">${{price_each_prod}}</td>
+                  </div>
+                    <td class="text-center align-middle px-0"><a href="{% url 'remove_from_cart' item.id %}" class="shop-tooltip close float-right  icon" title="" data-original-title="Remove"><i class="fa-solid fa-trash"></i></a></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <label class="text-muted font-weight-normal m-0"></label>
+            <h4 class="text-center alert alert-info"><strong>Total price:: ${{total_price}}</strong></h4>
+            <div class="float-right">
+<a href="/" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to shopping</a>
+  <a href="{% url 'checkout' %}" class="btn btn-lg btn-info mt-2">Checkout</a>
+            </div>
+
+          </div>
+      </div>
+  </div>
+
+
+  <script src="{% static 'js/cart.js' %}"></script>
+    </script>
+  {% endblock %}
